@@ -116,7 +116,7 @@ pip install taichi
 
 Make sure both files are placed in the same directory:
 
-- main.py
+- Mandelbort.py
 
 - Mandelbort_color.py
 
