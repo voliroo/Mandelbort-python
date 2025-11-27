@@ -32,7 +32,7 @@ It includes:
 ## 📂 Project Structure
 ```python
 .
-├── main.py                # Mandelbrot renderer + GUI zoom
+├── Mandelbort.py                # Mandelbrot renderer + GUI zoom
 ├── Mandelbort_color.py    # Color palette & smooth color interpolation
 └── README.md
 ```
