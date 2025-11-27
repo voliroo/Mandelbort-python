@@ -124,7 +124,7 @@ Make sure both files are placed in the same directory:
 
 Simply run:
 ```bash
-Mandelbort.py
+python Mandelbort.py
 ```
 
 A window titled "Mandelbrot Zoom (float64)" will appear.
