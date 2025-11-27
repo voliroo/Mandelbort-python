@@ -1,21 +1,21 @@
 import taichi as ti
-from Mandelbort_color import color_map
+import time
 
+start = time.time()
 
 arch = None
 
 #try cuda first
-try:
-     ti.init(arch=ti.cuda)
-     arch = ti.cuda
-     print("using CUDA/Nvidia card backend")
-except:
-    pass
+if arch is None:
+    try:
+        arch = ti.cuda
+        print("using CUDA/Nvidia card backend")
+    except:
+        pass
 
 #try OpenGL
 if arch is None:
     try:
-        ti.init(arch=ti.opengl)
         arch = ti.opengl
         print("using OpenGL Backend")
     except:
@@ -24,7 +24,6 @@ if arch is None:
 #try vulkan
 if arch is None:
     try:
-        ti.init(arch=ti.vulkan)
         arch = ti.vulkan
         print("using Vulkan Backend")
     except:
@@ -32,15 +31,15 @@ if arch is None:
 
 #Fallback to CPU 
 if arch is None:
-        ti.init(arch=ti.cpu)
         arch = ti.cpu
         print("using cpu backend")
 
-ti.reset()
 ti.init(arch=arch, default_fp=ti.f64)
-
+from Mandelbort_color import color_map
+end = time.time()
+print(f"Time elapsed: {end - start} seconds")
 # Resolution
-W, H = 900, 900
+W, H = 1000, 1000
 
 pixels = ti.Vector.field(3, dtype=ti.f64 , shape=(W , H))  # RGB now
 
@@ -52,7 +51,7 @@ def render(xmin: ti.f64, xmax: ti.f64,
     
     for i, j in pixels:
         #Calculating the value of (C)
-        x = xmin + (i / W) * (xmax - xmin) # re
+        x = xmin + (xmax - xmin) * (i / W)# re
         
         y = ymin + (j / H) * (ymax - ymin) #im
 
@@ -68,6 +67,7 @@ def render(xmin: ti.f64, xmax: ti.f64,
             it += 1
 
         t = it / max_iter
+        
         pixels[i, j] = color_map(t)
 
 
@@ -104,6 +104,11 @@ while gui.running:
             ymin, ymax = cy - dy / 2, cy + dy / 2
             max_iter = max(50, max_iter - 25)
 
+   
     render(xmin, xmax, ymin, ymax, max_iter)
     gui.set_image(pixels)
     gui.show()
+
+
+
+
